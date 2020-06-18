@@ -1,8 +1,13 @@
-add_library(example
+add_library(example-lib
     example.cc
 )
 
-target_include_directories(example
+set_target_properties(example-lib
+    PROPERTIES
+        OUTPUT_NAME example
+)
+
+target_include_directories(example-lib
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
