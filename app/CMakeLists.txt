@@ -1,5 +1,6 @@
 add_executable(proj-bin
-    main.cc)
+    main.cc
+)
 
 set_target_properties(proj-bin
     PROPERTIES
@@ -7,4 +8,6 @@ set_target_properties(proj-bin
 )
 
 target_link_libraries(proj-bin
-    example)
+    PRIVATE
+        example
+)
