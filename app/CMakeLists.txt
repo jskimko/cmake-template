@@ -1,5 +1,10 @@
-add_executable(app
+add_executable(proj-bin
     main.cc)
 
-target_link_libraries(app
+set_target_properties(proj-bin
+    PROPERTIES
+        OUTPUT_NAME proj
+)
+
+target_link_libraries(proj-bin
     example)
