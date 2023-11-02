@@ -23,7 +23,7 @@ if [ -d '.git' ]; then
   git=git
 fi
 
-for f in $(grep -irl example --exclude-dir='build' --exclude-dir='.*'
+for f in $(grep -irl example --exclude-dir='build' --exclude-dir='.*' \
          | grep -v $(basename $0)); do
   bname=$(basename "$f")
   if echo "$bname" | grep -Eq '^\.'; then
