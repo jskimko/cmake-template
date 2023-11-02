@@ -1,6 +1,0 @@
-include(CMakeFindDependencyMacro)
-
-#set(var @var@)
-#find_dependency(...)
-
-include("${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake")

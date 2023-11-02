@@ -1,0 +1,4 @@
+add_test(NAME "${PROJECT_NAME_LOWER}-bin"
+  COMMAND ${PROJECT_NAME_LOWER}-bin
+)
+
