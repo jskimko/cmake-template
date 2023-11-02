@@ -44,4 +44,5 @@ for f in $(find . -type d -iname '*example*' -not -path './build*'); do
 done
 
 echo
+echo "Update help string in src/$lower/util/cli.hh"
 echo "Remove this script with \`[git] rm $0\`"
