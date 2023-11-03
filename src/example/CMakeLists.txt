@@ -11,6 +11,13 @@ set_target_properties(${PROJECT_NAME_LOWER}-lib
     EXPORT_NAME ${PROJECT_NAME_LOWER}
 )
 
+if(${PROJECT_NAME_UPPER}_MAIN_PROJECT)
+  target_compile_options(${PROJECT_NAME_LOWER}-lib 
+    PUBLIC
+      -Wall -Wextra -pedantic -Werror
+  )
+endif()
+
 target_include_directories(${PROJECT_NAME_LOWER}-lib
   PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"

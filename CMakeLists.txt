@@ -54,11 +54,6 @@ include(cmake/${PROJECT_NAME_LOWER}-setup.cmake)
 # Subdirectories
 ################################
 
-if(${PROJECT_NAME_UPPER}_MAIN_PROJECT)
-  add_compile_options(-Wall -Wextra -pedantic -Werror)
-  add_compile_options(-Wno-error=unused-label)
-endif()
-
 add_subdirectory(app)
 add_subdirectory(src)
 
