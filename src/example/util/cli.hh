@@ -6,9 +6,11 @@
 
 namespace example {
 
+inline namespace v1 {
 using namespace cxxopts;
+} // namespace v1
 
-class CLIParser : public cxxopts::Options {
+class CLIParser : public Options {
 public:
   CLIParser(std::string program = "example",
             std::string help = "example - an example project\n");

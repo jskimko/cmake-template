@@ -1,5 +1,5 @@
-#ifndef EXAMPLE_EXCEPTION_HH
-#define EXAMPLE_EXCEPTION_HH
+#ifndef EXAMPLE_UTIL_EXCEPTION_HH
+#define EXAMPLE_UTIL_EXCEPTION_HH
 
 #include <stdexcept>
 
@@ -11,4 +11,4 @@ class Exception : public std::runtime_error {
 
 } // namespace example
 
-#endif // EXAMPLE_EXCEPTION_HH
+#endif // EXAMPLE_UTIL_EXCEPTION_HH
