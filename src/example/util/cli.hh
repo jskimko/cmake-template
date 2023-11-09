@@ -5,10 +5,7 @@
 #include <string>
 
 namespace example {
-
-inline namespace v1 {
 using namespace cxxopts;
-} // namespace v1
 
 class CLIParser : public Options {
 public:

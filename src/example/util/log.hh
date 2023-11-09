@@ -6,9 +6,7 @@
 namespace example {
 namespace log {
 
-inline namespace v1 {
 using namespace spdlog;
-} // namespace v1
 
 } // namespace log
 } // namespace bssat
