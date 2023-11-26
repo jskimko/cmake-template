@@ -6,8 +6,7 @@
 # Other dependencies
 ################################
 
-find_package(cxxopts REQUIRED)
-find_package(spdlog REQUIRED)
+find_package(fmt REQUIRED)
 
 ################################
 # Scoped variables
@@ -19,10 +18,10 @@ set(${PROJECT_NAME_UPPER}_DEFAULT_VERBOSE_LEVEL ${DEFAULT_VERBOSE_LEVEL})
 # Generate config.hh
 ################################
 
-configure_file("${PROJECT_SOURCE_DIR}/src/${PROJECT_NAME_LOWER}/config.hh.in" 
-               "${PROJECT_BINARY_DIR}/src/${PROJECT_NAME_LOWER}/config.hh")
+configure_file("${PROJECT_SOURCE_DIR}/src/config.hh.in" 
+               "${PROJECT_BINARY_DIR}/src/config.hh")
 
-install(FILES "${PROJECT_BINARY_DIR}/src/${PROJECT_NAME_LOWER}/config.hh"
+install(FILES "${PROJECT_BINARY_DIR}/src/config.hh"
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME_LOWER}"
 )
 
@@ -61,14 +60,14 @@ function(${PROJECT_NAME_LOWER}_set_public_headers)
     message(FATAL_ERROR "nonexistent TARGET: ${SET_PUBLIC_HEADERS_TARGET}")
   endif()
 
-  get_filename_component(_main_header "${SET_PUBLIC_HEADERS_MAIN_HEADER}" ABSOLUTE)
-  if("${_main_header}" STREQUAL "" OR NOT EXISTS "${_main_header}")
-    message(FATAL_ERROR "cannot find MAIN_HEADER: ${SET_PUBLIC_HEADERS_MAIN_HEADER}")
-  endif()
-
   get_filename_component(_base_dir "${SET_PUBLIC_HEADERS_BASE_DIR}" ABSOLUTE)
   if("${_base_dir}" STREQUAL "" OR NOT EXISTS "${_base_dir}")
-    message(FATAL_ERROR "cannot find BASE_DIR: ${SET_PUBLIC_HEADERS_BASE_DIR}")
+    message(FATAL_ERROR "cannot find BASE_DIR: ${_base_dir}")
+  endif()
+
+  set(_main_header "${_base_dir}/${PROJECT_NAME_LOWER}/${SET_PUBLIC_HEADERS_MAIN_HEADER}")
+  if("${_main_header}" STREQUAL "" OR NOT EXISTS "${_main_header}")
+    message(FATAL_ERROR "cannot find MAIN_HEADER: ${_main_header}")
   endif()
 
   set(_public_headers "${_main_header}")
@@ -79,7 +78,7 @@ function(${PROJECT_NAME_LOWER}_set_public_headers)
       continue()
     endif()
 
-    string(REGEX MATCH "[A-Za-z_/]*\.hh" _public_header ${_string})
+    string(REGEX MATCH "${PROJECT_NAME_LOWER}/[A-Za-z_/]*\.hh" _public_header ${_string})
     set(_public_header "${_base_dir}/${_public_header}")
 
     if(NOT EXISTS "${_public_header}")

@@ -16,7 +16,7 @@ project(example
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -40,6 +40,7 @@ if(NOT DEFINED ${PROJECT_NAME_UPPER}_MAIN_PROJECT)
 endif()
 
 option(ENABLE_TESTS "Enable tests" ${${PROJECT_NAME_UPPER}_MAIN_PROJECT})
+option(ENABLE_WERROR "Set -Werror" OFF)
 
 ################################
 # Project Config
