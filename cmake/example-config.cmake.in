@@ -1,4 +1,4 @@
-set(@PROJECT_NAME_UPPER@_VERSION @PROJECT_VERSION@)
+set(EXAMPLE_VERSION @PROJECT_VERSION@)
 
 @PACKAGE_INIT@
 
@@ -7,6 +7,6 @@ include(CMakeFindDependencyMacro)
 #set(var @var@)
 find_dependency(fmt)
 
-include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME_LOWER@-targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/example-targets.cmake")
 
-check_required_components(@PROJECT_NAME_LOWER@)
+check_required_components(example)

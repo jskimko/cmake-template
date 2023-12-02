@@ -1,4 +1,4 @@
-#include "example/util/log.hh"
+#include <example/util/log.hh>
 #include <cstdio>
 
 namespace example {

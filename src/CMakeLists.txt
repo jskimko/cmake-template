@@ -2,47 +2,42 @@
 # Library
 ################################
 
-add_library(${PROJECT_NAME_LOWER}-lib)
-add_library(${PROJECT_NAME_LOWER}::${PROJECT_NAME_LOWER} ALIAS ${PROJECT_NAME_LOWER}-lib)
+add_library(example-lib)
+add_library(example::example ALIAS example-lib)
 
-set_target_properties(${PROJECT_NAME_LOWER}-lib
+set_target_properties(example-lib
   PROPERTIES
-    OUTPUT_NAME ${PROJECT_NAME_LOWER}
-    EXPORT_NAME ${PROJECT_NAME_LOWER}
+    OUTPUT_NAME example
+    EXPORT_NAME example
 )
 
-target_compile_features(${PROJECT_NAME_LOWER}-lib
+target_compile_features(example-lib
   PUBLIC
     cxx_std_20
 )
 
-if(${PROJECT_NAME_UPPER}_MAIN_PROJECT)
-  target_compile_options(${PROJECT_NAME_LOWER}-lib 
+if(EXAMPLE_MAIN_PROJECT)
+  target_compile_options(example-lib 
     PUBLIC
     -Wall -Wextra -pedantic $<$<BOOL:${ENABLE_WERROR}>:-Werror>
   )
 endif()
 
-file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include")
-file(CREATE_LINK "${CMAKE_CURRENT_SOURCE_DIR}" 
-                 "${PROJECT_BINARY_DIR}/include/example" SYMBOLIC)
-
-target_include_directories(${PROJECT_NAME_LOWER}-lib
+target_include_directories(example-lib
   PUBLIC
-    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>"
-    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>" # config.hh
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-target_link_libraries(${PROJECT_NAME_LOWER}-lib 
+target_link_libraries(example-lib 
   PUBLIC
     fmt::fmt
 )
 
-cmake_language(CALL ${PROJECT_NAME_LOWER}_set_public_headers
-  TARGET ${PROJECT_NAME_LOWER}-lib
-  MAIN_HEADER "${PROJECT_NAME_LOWER}.hh"
-  BASE_DIR "${PROJECT_BINARY_DIR}/include"
+example_set_public_headers(
+  TARGET example-lib
+  MAIN_HEADER "example.hh"
 )
 
 ################################
@@ -55,15 +50,21 @@ add_subdirectory(util)
 # Install
 ################################
 
-install(TARGETS ${PROJECT_NAME_LOWER}-lib 
-  EXPORT ${PROJECT_NAME_LOWER}-export
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.hh.in" 
+               "${CMAKE_CURRENT_BINARY_DIR}/config.hh")
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hh"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/example")
+
+install(TARGETS example-lib 
+  EXPORT example-export
   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   FILE_SET HEADERS
 )
 
-install(EXPORT ${PROJECT_NAME_LOWER}-export
-  FILE ${PROJECT_NAME_LOWER}-targets.cmake
-  NAMESPACE ${PROJECT_NAME_LOWER}::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}"
+install(EXPORT example-export
+  FILE example-targets.cmake
+  NAMESPACE example::
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/example"
 )
 

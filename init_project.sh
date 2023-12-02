@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ ! -d src ]; then
-  echo "error: must run from root directory" >&2
+  echo "error: must run from root directory or already initialized" >&2
   exit 2
 fi
 
@@ -20,7 +20,7 @@ upper=$(echo $new_name | tr [:lower:] [:upper:])
 lower=$(echo $new_name | tr [:upper:] [:lower:])
 
 if [ -d '.git' ]; then
-  git=git
+  git="git "
 fi
 
 for f in $(grep -irl example --exclude-dir='build' --exclude-dir='.*' \
@@ -36,13 +36,14 @@ for f in $(grep -irl example --exclude-dir='build' --exclude-dir='.*' \
 done
 
 for f in $(find . -type f -iname '*example*' -not -path './build*'); do
-  $git mv $f $(echo $f | sed "s:/\([^/]*\)example\([^/]*\)$:/\1${lower}\2:")
+  ${git}mv $f $(echo $f | sed "s:/\([^/]*\)example\([^/]*\)$:/\1${lower}\2:")
 done
 
 for f in $(find . -type d -iname '*example*' -not -path './build*'); do
-  $git mv $f $(echo $f | sed "s:example:${lower}:")
+  ${git}mv $f $(echo $f | sed "s:example:${lower}:")
 done
 
+mv example $new_name
+
 echo
-echo "Update help string in src/$lower/util/cli.hh"
-echo "Remove this script with \`[git] rm $0\`"
+echo "Remove this script with \`${git}rm $0\`"

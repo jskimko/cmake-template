@@ -1,14 +1,13 @@
-#include "example/example.hh"
-#include <sstream>
+#include <example/example.hh>
 
 int main(int argc, char *argv[]) {
-  std::stringstream ss;
+  std::string s;
 
-  ss << argv[0];
+  fmt::format_to(std::back_inserter(s), "{}", argv[0]);
   for (int i=1; i<argc; i++) {
-    ss << " " << argv[i];
+    fmt::format_to(std::back_inserter(s), " {}", argv[i]);
   }
 
-  example::log::log("{}", ss.view());
+  example::log::log("{}", s);
   return 0;
 }

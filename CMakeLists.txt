@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.23)
 # 3.9 -> MPI::MPI_<lang> target
 # 3.12 -> <PackageName>_ROOT
 # 3.13 -> relative target_sources (CMP0076)
-# 3.18 -> cmake_language
 # 3.23 -> target_sources(FILE_SET)
 
 ################################
@@ -31,15 +30,15 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Build Config
 ################################
 
-if(NOT DEFINED ${PROJECT_NAME_UPPER}_MAIN_PROJECT)
+if(NOT DEFINED EXAMPLE_MAIN_PROJECT)
   if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    set(${PROJECT_NAME_UPPER}_MAIN_PROJECT ON)
+    set(EXAMPLE_MAIN_PROJECT ON)
   else()
-    set(${PROJECT_NAME_UPPER}_MAIN_PROJECT OFF)
+    set(EXAMPLE_MAIN_PROJECT OFF)
   endif()
 endif()
 
-option(ENABLE_TESTS "Enable tests" ${${PROJECT_NAME_UPPER}_MAIN_PROJECT})
+option(ENABLE_TESTS "Enable tests" ${EXAMPLE_MAIN_PROJECT})
 option(ENABLE_WERROR "Set -Werror" OFF)
 
 ################################
@@ -49,14 +48,14 @@ option(ENABLE_WERROR "Set -Werror" OFF)
 set(DEFAULT_VERBOSE_LEVEL "info" CACHE STRING 
     "Default verbose level")
 
-include(cmake/${PROJECT_NAME_LOWER}-setup.cmake)
+include(cmake/example-setup.cmake)
 
 ################################
 # Subdirectories
 ################################
 
 add_subdirectory(app)
-add_subdirectory(src)
+add_subdirectory(example)
 
 if(ENABLE_TESTS)
   enable_testing()

@@ -12,18 +12,7 @@ find_package(fmt REQUIRED)
 # Scoped variables
 ################################
 
-set(${PROJECT_NAME_UPPER}_DEFAULT_VERBOSE_LEVEL ${DEFAULT_VERBOSE_LEVEL})
-
-################################
-# Generate config.hh
-################################
-
-configure_file("${PROJECT_SOURCE_DIR}/src/config.hh.in" 
-               "${PROJECT_BINARY_DIR}/src/config.hh")
-
-install(FILES "${PROJECT_BINARY_DIR}/src/config.hh"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME_LOWER}"
-)
+set(EXAMPLE_DEFAULT_VERBOSE_LEVEL ${DEFAULT_VERBOSE_LEVEL})
 
 ################################
 # Generate cmake config files
@@ -31,41 +20,36 @@ install(FILES "${PROJECT_BINARY_DIR}/src/config.hh"
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-  "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config-version.cmake"
+  "${PROJECT_BINARY_DIR}/cmake/example-config-version.cmake"
   VERSION ${PACKAGE_VERSION}
   COMPATIBILITY AnyNewerVersion
 )
 
 configure_package_config_file(
-  "${CMAKE_SOURCE_DIR}/cmake/${PROJECT_NAME_LOWER}-config.cmake.in"
-  "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}"
+  "${PROJECT_SOURCE_DIR}/cmake/example-config.cmake.in"
+  "${PROJECT_BINARY_DIR}/cmake/example-config.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/example"
 )
 
 install(FILES 
-  "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config.cmake"
-  "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config-version.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}"
+  "${PROJECT_BINARY_DIR}/cmake/example-config.cmake"
+  "${PROJECT_BINARY_DIR}/cmake/example-config-version.cmake"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/example"
 )
 
 ################################
 # Functions
 ################################
 
-function(${PROJECT_NAME_LOWER}_set_public_headers)
-  set(_one_value_args "TARGET" "MAIN_HEADER" "BASE_DIR")
+function(example_set_public_headers)
+  set(_one_value_args "TARGET" "MAIN_HEADER")
   cmake_parse_arguments(SET_PUBLIC_HEADERS "" "${_one_value_args}" "" ${ARGN})
 
   if(NOT TARGET "${SET_PUBLIC_HEADERS_TARGET}")
     message(FATAL_ERROR "nonexistent TARGET: ${SET_PUBLIC_HEADERS_TARGET}")
   endif()
 
-  get_filename_component(_base_dir "${SET_PUBLIC_HEADERS_BASE_DIR}" ABSOLUTE)
-  if("${_base_dir}" STREQUAL "" OR NOT EXISTS "${_base_dir}")
-    message(FATAL_ERROR "cannot find BASE_DIR: ${_base_dir}")
-  endif()
-
-  set(_main_header "${_base_dir}/${PROJECT_NAME_LOWER}/${SET_PUBLIC_HEADERS_MAIN_HEADER}")
+  set(_main_header "${CMAKE_CURRENT_SOURCE_DIR}/${SET_PUBLIC_HEADERS_MAIN_HEADER}")
   if("${_main_header}" STREQUAL "" OR NOT EXISTS "${_main_header}")
     message(FATAL_ERROR "cannot find MAIN_HEADER: ${_main_header}")
   endif()
@@ -78,9 +62,12 @@ function(${PROJECT_NAME_LOWER}_set_public_headers)
       continue()
     endif()
 
-    string(REGEX MATCH "${PROJECT_NAME_LOWER}/[A-Za-z_/]*\.hh" _public_header ${_string})
-    set(_public_header "${_base_dir}/${_public_header}")
+    string(REGEX MATCH "example/[A-Za-z_/]*\.hh" _public_header ${_string})
+    if("${_public_header}" STREQUAL "example/config.hh")
+      continue() # handled separately
+    endif()
 
+    set(_public_header "${PROJECT_SOURCE_DIR}/${_public_header}")
     if(NOT EXISTS "${_public_header}")
       message(FATAL_ERROR "cannot find included header: ${_public_header}")
     endif()
@@ -92,9 +79,9 @@ function(${PROJECT_NAME_LOWER}_set_public_headers)
     PUBLIC
       FILE_SET
         HEADERS
-        BASE_DIRS "${_base_dir}"
+        BASE_DIRS "${PROJECT_SOURCE_DIR}"
         FILES ${_public_headers}
   )
 
-set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_main_header}")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_main_header}")
 endfunction()
