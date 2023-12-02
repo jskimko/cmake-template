@@ -1,6 +1,10 @@
 ################################
-# Check config
+# Apply configuration
 ################################
+
+if(ENABLE_MPI)
+  find_package(MPI REQUIRED)
+endif()
 
 ################################
 # Other dependencies
@@ -12,7 +16,7 @@ find_package(fmt REQUIRED)
 # Scoped variables
 ################################
 
-set(EXAMPLE_DEFAULT_VERBOSE_LEVEL ${DEFAULT_VERBOSE_LEVEL})
+set(EXAMPLE_ENABLE_MPI ${ENABLE_MPI})
 
 ################################
 # Generate cmake config files

@@ -26,12 +26,13 @@ endif()
 target_include_directories(example-lib
   PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>" # config.hh
+    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>" # config.hh
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 target_link_libraries(example-lib 
   PUBLIC
+    $<$<BOOL:${EXAMPLE_ENABLE_MPI}>:MPI::MPI_CXX>
     fmt::fmt
 )
 

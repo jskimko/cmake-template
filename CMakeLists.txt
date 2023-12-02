@@ -27,7 +27,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 ################################
-# Build Config
+# Build configuration
 ################################
 
 if(NOT DEFINED EXAMPLE_MAIN_PROJECT)
@@ -42,11 +42,10 @@ option(ENABLE_TESTS "Enable tests" ${EXAMPLE_MAIN_PROJECT})
 option(ENABLE_WERROR "Set -Werror" OFF)
 
 ################################
-# Project Config
+# Project configuration
 ################################
 
-set(DEFAULT_VERBOSE_LEVEL "info" CACHE STRING 
-    "Default verbose level")
+option(ENABLE_MPI "Enable MPI" OFF)
 
 include(cmake/example-setup.cmake)
 
