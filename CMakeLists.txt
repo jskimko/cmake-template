@@ -46,6 +46,7 @@ option(ENABLE_WERROR "Set -Werror" OFF)
 ################################
 
 option(ENABLE_MPI "Enable MPI" OFF)
+option(ENABLE_PYBIND11 "Enable pybind11" OFF)
 
 include(cmake/example-setup.cmake)
 

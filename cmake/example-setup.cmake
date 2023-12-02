@@ -6,14 +6,18 @@ if(ENABLE_MPI)
   find_package(MPI REQUIRED)
 endif()
 
+if(ENABLE_PYBIND11)
+  find_package(pybind11 REQUIRED)
+endif()
+
 ################################
-# Other dependencies
+# Required dependencies
 ################################
 
 find_package(fmt REQUIRED)
 
 ################################
-# Scoped variables
+# Source variables
 ################################
 
 set(EXAMPLE_ENABLE_MPI ${ENABLE_MPI})

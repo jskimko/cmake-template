@@ -9,6 +9,7 @@ set_target_properties(example-lib
   PROPERTIES
     OUTPUT_NAME example
     EXPORT_NAME example
+    POSITION_INDEPENDENT_CODE ${ENABLE_PYBIND11}
 )
 
 target_compile_features(example-lib
@@ -32,7 +33,8 @@ target_include_directories(example-lib
 
 target_link_libraries(example-lib 
   PUBLIC
-    $<$<BOOL:${EXAMPLE_ENABLE_MPI}>:MPI::MPI_CXX>
+    $<$<BOOL:${ENABLE_MPI}>:MPI::MPI_CXX>
+    $<$<BOOL:${ENABLE_PYBIND11}>:pybind11::pybind11>
     fmt::fmt
 )
 
@@ -46,6 +48,10 @@ example_set_public_headers(
 ################################
 
 add_subdirectory(util)
+
+if(ENABLE_PYBIND11)
+  add_subdirectory(python)
+endif()
 
 ################################
 # Install
