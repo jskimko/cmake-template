@@ -1,4 +1,4 @@
-target_sources(${PROJECT_NAME_LOWER}-lib
+target_sources(example-lib
   PRIVATE
     log.cc
 )
