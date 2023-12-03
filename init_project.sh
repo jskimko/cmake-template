@@ -46,4 +46,5 @@ done
 mv -v example $new_name
 
 echo
-echo "Remove this script with \`${git}rm $0\`"
+echo "1. Remove this script with \`${git}rm $0\`"
+echo "2. Update README.md"
