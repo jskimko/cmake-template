@@ -43,7 +43,7 @@ for f in $(find . -type d -iname '*example*' -not -path './build*'); do
   ${git}mv $f $(echo $f | sed "s:example:${lower}:")
 done
 
-mv example $new_name
+mv -v example $new_name
 
 echo
 echo "Remove this script with \`${git}rm $0\`"
