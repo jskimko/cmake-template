@@ -2,7 +2,7 @@
 
 #ifdef EXAMPLE_ENABLE_MPI
 #include <mpi.h>
-#define EXIT(rc) MPI_Abort(rc);
+#define EXIT(rc) MPI_Abort(MPI_COMM_WORLD, rc);
 #else
 #define EXIT(rc) return rc;
 #endif
