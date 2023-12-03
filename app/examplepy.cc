@@ -1,8 +1,5 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include <cstdio>
-#include <cstdlib>
-
 #include <example/config.hh>
 
 #ifdef EXAMPLE_ENABLE_MPI
@@ -11,6 +8,17 @@
 #else
 #define EXIT(rc) std::exit(rc);
 #endif
+
+extern "C" {
+// BEGIN Python/getversion.c
+const char* Py_GetVersion(void) {
+  static char version[256];
+  PyOS_snprintf(version, sizeof(version), "%.80s (%.80s %.80s) %.80s", 
+      PY_VERSION, EXAMPLE_PROJECT_NAME, EXAMPLE_VERSION, Py_GetCompiler());
+  return version;
+}
+// END Python/getversion.c
+}
 
 int main(int argc, char *argv[]) {
 
@@ -25,7 +33,7 @@ int main(int argc, char *argv[]) {
   auto exception = [&]() {
     PyConfig_Clear(&config);
     if (!PyStatus_IsExit(status)) {
-      fprintf(stderr, "error: %s\n", status.err_msg);
+      fprintf(stderr, "pyinit error: %s\n", status.err_msg);
     }
     EXIT(status.exitcode);
   };
