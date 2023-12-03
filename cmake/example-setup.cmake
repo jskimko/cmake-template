@@ -7,7 +7,17 @@ if(ENABLE_MPI)
 endif()
 
 if(ENABLE_PYBIND11)
+  find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
   find_package(pybind11 REQUIRED)
+
+  if(NOT PYTHON_PURELIB_DIR)
+    execute_process(
+      COMMAND "${Python3_EXECUTABLE}" -c "if True:
+        import sysconfig; p = sysconfig.get_path('purelib', vars={'base': ''})
+        print(p.lstrip('/'), end='')"
+      OUTPUT_VARIABLE PYTHON_PURELIB_DIR
+    )
+  endif()
 endif()
 
 ################################
@@ -17,7 +27,7 @@ endif()
 find_package(fmt REQUIRED)
 
 ################################
-# Source variables
+# C++ config macros
 ################################
 
 set(EXAMPLE_ENABLE_MPI ${ENABLE_MPI})

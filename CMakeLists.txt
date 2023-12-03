@@ -17,10 +17,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(GNUInstallDirs)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}")
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 ################################
@@ -44,6 +40,8 @@ option(ENABLE_WERROR "Set -Werror" OFF)
 
 option(ENABLE_MPI "Enable MPI" OFF)
 option(ENABLE_PYBIND11 "Enable pybind11" OFF)
+
+set(PYTHON_PURELIB_DIR "" CACHE STRING "Suffix to python site-packages directory")
 
 include(cmake/example-setup.cmake)
 

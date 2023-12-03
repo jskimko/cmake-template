@@ -2,6 +2,9 @@
 
 #ifdef EXAMPLE_ENABLE_MPI
 #include <mpi.h>
+#define EXIT(rc) MPI_Abort(rc);
+#else
+#define EXIT(rc) return rc;
 #endif
 
 int main(int argc, char *argv[]) {

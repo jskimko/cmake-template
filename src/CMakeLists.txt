@@ -9,6 +9,8 @@ set_target_properties(example-lib
   PROPERTIES
     OUTPUT_NAME example
     EXPORT_NAME example
+    ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
     POSITION_INDEPENDENT_CODE ${ENABLE_PYBIND11}
 )
 
@@ -57,11 +59,17 @@ endif()
 # Install
 ################################
 
+set(EXAMPLE_PYTHON_PURELIB_DIR "${PROJECT_BINARY_DIR}/${PYTHON_PURELIB_DIR}")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.hh.in" 
                "${CMAKE_CURRENT_BINARY_DIR}/config.hh")
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hh"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/example")
+set(EXAMPLE_PYTHON_PURELIB_DIR "${CMAKE_INSTALL_PREFIX}/${PYTHON_PURELIB_DIR}")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.hh.in" 
+               "${CMAKE_CURRENT_BINARY_DIR}/config-install.hh")
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/config-install.hh"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/example"
+  RENAME "config.hh")
 
 install(TARGETS example-lib 
   EXPORT example-export
