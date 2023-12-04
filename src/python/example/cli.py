@@ -16,7 +16,6 @@ class CLIParser(argparse.ArgumentParser):
     super().__init__(*args, **kwargs)
 
   def parse_args(self, *args, **kwargs):
-
     args = super().parse_args(*args, **kwargs)
     return args
 
