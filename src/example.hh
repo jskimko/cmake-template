@@ -3,6 +3,6 @@
 
 #include <example/config.hh>
 #include <example/util/log.hh>
-#include <example/util/except.hh>
+#include <example/util/types.hh>
 
 #endif // EXAMPLE_HH
