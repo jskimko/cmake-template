@@ -1,2 +1,2 @@
 from .cli import *
-from ._example import *
+from .core import *

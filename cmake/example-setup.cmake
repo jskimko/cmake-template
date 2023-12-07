@@ -24,6 +24,7 @@ endif()
 # Required dependencies
 ################################
 
+find_package(range-v3 REQUIRED)
 find_package(fmt REQUIRED)
 
 ################################
@@ -31,6 +32,9 @@ find_package(fmt REQUIRED)
 ################################
 
 set(EXAMPLE_ENABLE_MPI ${ENABLE_MPI})
+set(EXAMPLE_ENABLE_PYBIND11 ${ENABLE_PYBIND11})
+set(EXAMPLE_ENABLE_LOGGING ${ENABLE_LOGGING})
+set(EXAMPLE_DEFAULT_VERBOSITY ${DEFAULT_VERBOSITY})
 
 ################################
 # Generate cmake config files

@@ -2,18 +2,20 @@
 #include <Python.h>
 
 #include <example/example.hh>
+#include <cstdlib>
 #include <cstring>
 
-#ifdef EXAMPLE_ENABLE_MPI
+#if EXAMPLE_ENABLE_MPI
 #include <mpi.h>
 #define EXIT(rc) do { MPI_Finalize(); std::exit(rc); } while (0)
-#define PRINTF(...) do { if (rank == 0) printf(__VA_ARGS__); } while (0)
-#define FPRINTF(f, ...) do { if (rank == 0) fprintf(f, __VA_ARGS__); } while (0)
+#define LOG(level, ...) do { if (rank == 0) log::level(__VA_ARGS__); } while (0)
 #else
 #define EXIT(rc) std::exit(rc);
-#define PRINTF(...) do { printf(__VA_ARGS__); } while (0)
-#define FPRINTF(f, ...) do { fprintf(f, __VA_ARGS__); } while (0)
+#define LOG(level, ...) do { log::level(__VA_ARGS__); } while (0)
 #endif
+
+#define LOG_INFO(...) LOG(info, __VA_ARGS__)
+#define LOG_ERROR(...) LOG(error, __VA_ARGS__)
 
 extern "C" {
 // BEGIN Python/getversion.c
@@ -27,8 +29,9 @@ const char* Py_GetVersion(void) {
 }
 
 int main(int argc, char *argv[]) {
+  using namespace example;
 
-#ifdef EXAMPLE_ENABLE_MPI
+#if EXAMPLE_ENABLE_MPI
   MPI_Init(&argc, &argv);
 
   int rank, size;
@@ -45,7 +48,7 @@ int main(int argc, char *argv[]) {
 
   for (int i=0; i<argc; i++) {
     if (std::strcmp(argv[i], "-h") == 0 || std::strcmp(argv[i], "--help") == 0) {
-      PRINTF("%s\n", usage().c_str());
+      LOG_INFO("{}\n", usage());
       EXIT(0);
     }
   }
@@ -57,7 +60,7 @@ int main(int argc, char *argv[]) {
   auto exception = [&]() {
     PyConfig_Clear(&config);
     if (!PyStatus_IsExit(status)) {
-      FPRINTF(stderr, "pyinit error: %s\n", status.err_msg);
+      LOG_ERROR("pyinit error: {}\n", status.err_msg);
     }
     EXIT(status.exitcode);
   };
@@ -82,7 +85,7 @@ int main(int argc, char *argv[]) {
   if (rc != 0) { EXIT(rc); }
   // END https://docs.python.org/3.10/c-api/init_config.html
 
-#ifdef EXAMPLE_ENABLE_MPI
+#if EXAMPLE_ENABLE_MPI
   MPI_Finalize();
 #endif
 

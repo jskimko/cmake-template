@@ -9,9 +9,14 @@ set_target_properties(example-lib
   PROPERTIES
     OUTPUT_NAME example
     EXPORT_NAME example
+
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
     POSITION_INDEPENDENT_CODE ${ENABLE_PYBIND11}
+
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 target_compile_features(example-lib
@@ -37,12 +42,18 @@ target_link_libraries(example-lib
   PUBLIC
     $<$<BOOL:${ENABLE_MPI}>:MPI::MPI_CXX>
     $<$<BOOL:${ENABLE_PYBIND11}>:pybind11::pybind11>
+    range-v3::range-v3
     fmt::fmt
 )
 
 example_set_public_headers(
   TARGET example-lib
   MAIN_HEADER "example.hh"
+)
+
+target_sources(example-lib
+  PRIVATE
+    Settings.cc
 )
 
 ################################

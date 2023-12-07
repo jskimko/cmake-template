@@ -40,8 +40,9 @@ option(ENABLE_WERROR "Set -Werror" OFF)
 
 option(ENABLE_MPI "Enable MPI" OFF)
 option(ENABLE_PYBIND11 "Enable pybind11" OFF)
-
 set(PYTHON_PURELIB_DIR "" CACHE STRING "Suffix to python site-packages directory")
+option(ENABLE_LOGGING "Enable logging" ON)
+set(DEFAULT_VERBOSITY "INFO" CACHE STRING "Default verbosity level")
 
 include(cmake/example-setup.cmake)
 

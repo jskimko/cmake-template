@@ -7,6 +7,10 @@ set_target_properties(example-pyb
   PROPERTIES
     OUTPUT_NAME _example
     LIBRARY_OUTPUT_DIRECTORY "${_dest}"
+
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 target_link_libraries(example-pyb

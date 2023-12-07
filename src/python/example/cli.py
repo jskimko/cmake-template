@@ -3,6 +3,7 @@ __all__ = [
 ]
 
 import argparse
+from ._example import log, Settings
 
 class CLIParser(argparse.ArgumentParser):
   def __init__(self, *args, **kwargs):
@@ -15,7 +16,18 @@ class CLIParser(argparse.ArgumentParser):
 
     super().__init__(*args, **kwargs)
 
+    self.add_argument('-v', '--verbosity', type=log_Level_type, default=log.INFO,
+                      help='default verbosity level')
+
   def parse_args(self, *args, **kwargs):
     args = super().parse_args(*args, **kwargs)
+
+    Settings.setInt('verbosity', args.verbosity)
+
     return args
 
+def log_Level_type(s):
+  if s in log.Level.__members__:
+    return eval(f'log.Level.{s}')
+  else:
+    return log.Level(int(s))
